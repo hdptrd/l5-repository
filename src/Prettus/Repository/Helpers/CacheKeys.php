@@ -2,6 +2,8 @@
 
 namespace Prettus\Repository\Helpers;
 
+use Illuminate\Support\Facades\Storage;
+
 /**
  * Class CacheKeys
  * @package Prettus\Repository\Helpers
@@ -9,11 +11,10 @@ namespace Prettus\Repository\Helpers;
  */
 class CacheKeys
 {
-
     /**
      * @var string
      */
-    protected static $storeFile = "repository-cache-keys.json";
+    protected static $storeFile = 'repository-cache-keys.json';
 
     /**
      * @var array
@@ -54,7 +55,8 @@ class CacheKeys
             self::storeKeys();
         }
 
-        $content = file_get_contents($file);
+        // $content = file_get_contents($file);
+        $content = Storage::get($file);
         self::$keys = json_decode($content, true);
 
         return self::$keys;
@@ -65,7 +67,8 @@ class CacheKeys
      */
     public static function getFileKeys()
     {
-        $file = storage_path("framework/cache/" . self::$storeFile);
+        // $file = storage_path('framework/cache/' . self::$storeFile);
+        $file = 'framework/cache/' . self::$storeFile;
 
         return $file;
     }
@@ -79,7 +82,8 @@ class CacheKeys
         self::$keys = is_null(self::$keys) ? [] : self::$keys;
         $content = json_encode(self::$keys);
 
-        return file_put_contents($file, $content);
+        // return file_put_contents($file, $content);
+        return Storage::put($file, $content);
     }
 
     /**
